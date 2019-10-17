@@ -1,0 +1,39 @@
+ngx_addon_name=ngx_http_qkd_api_module
+
+ECHO_SRCS="                                                                 \
+        $ngx_addon_dir/src/cJSON.c                                          \
+        $ngx_addon_dir/src/ngx_http_qkd_api_module.c                        \
+        $ngx_addon_dir/src/ngx_http_qkd_api_response.c                      \
+        $ngx_addon_dir/src/ngx_http_qkd_api_router.c                        \
+        $ngx_addon_dir/src/ngx_http_qkd_api_params.c                        \
+        $ngx_addon_dir/src/ngx_http_qkd_api_status.c                        \
+        $ngx_addon_dir/src/ngx_http_qkd_api_keys.c                          \
+        $ngx_addon_dir/src/ngx_http_qkd_api_post.c                          \
+        "
+
+ECHO_DEPS="                                                                 \
+        $ngx_addon_dir/src/ddebug.h                                         \
+        $ngx_addon_dir/src/cJSON.h                                          \
+        $ngx_addon_dir/src/ngx_http_qkd_api_module.h                        \
+        $ngx_addon_dir/src/ngx_http_qkd_api_response.h                      \
+        $ngx_addon_dir/src/ngx_http_qkd_api_router.h                        \
+        $ngx_addon_dir/src/ngx_http_qkd_api_params.h                        \
+        $ngx_addon_dir/src/ngx_http_qkd_api_status.h                        \
+        $ngx_addon_dir/src/ngx_http_qkd_api_keys.h                          \
+        $ngx_addon_dir/src/ngx_http_qkd_api_post.h                          \
+        "
+
+if [ -n "$ngx_module_link" ]; then
+    ngx_module_type=HTTP_AUX_FILTER
+    ngx_module_name=$ngx_addon_name
+    ngx_module_incs=
+    ngx_module_deps="$ECHO_DEPS"
+    ngx_module_srcs="$ECHO_SRCS"
+    ngx_module_libs=-lm
+
+    . auto/module
+else
+    HTTP_AUX_FILTER_MODULES="$HTTP_AUX_FILTER_MODULES $ngx_addon_name"
+    NGX_ADDON_SRCS="$NGX_ADDON_SRCS $ECHO_SRCS"
+    NGX_ADDON_DEPS="$NGX_ADDON_DEPS $ECHO_DEPS"
+fi
